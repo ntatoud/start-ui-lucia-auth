@@ -25,6 +25,12 @@ export const env = createEnv({
       .enum(['true', 'false'])
       .default(process.env.NODE_ENV === 'production' ? 'false' : 'true')
       .transform((value) => value === 'true'),
+
+    // Oauth provider
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+    FACEBOOK_CLIENT_ID: z.string(),
+    FACEBOOK_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -77,6 +83,10 @@ export const env = createEnv({
     EMAIL_SERVER: process.env.EMAIL_SERVER,
     LOGGER_LEVEL: process.env.LOGGER_LEVEL,
     LOGGER_PRETTY: process.env.LOGGER_PRETTY,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID,
+    FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET,
 
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_VERCEL_URL
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`

@@ -15,7 +15,7 @@ export const zUserAccountStatus = () =>
 export type User = z.infer<ReturnType<typeof zUser>>;
 export const zUser = () =>
   z.object({
-    id: z.string().cuid(),
+    id: z.string(),
     createdAt: z.date(),
     updatedAt: z.date(),
     name: zu.string
@@ -44,6 +44,7 @@ export const zUser = () =>
     language: zu.string
       .nonEmpty(z.string().min(2))
       .default(DEFAULT_LANGUAGE_KEY),
+    profilePictureUrl: z.string().url().nullable(),
   });
 
 export type FormFieldUser = z.infer<ReturnType<typeof zFormFieldsUser>>;

@@ -50,6 +50,7 @@ export const AppNavBarDesktop = (props: BoxProps) => {
               href="/account"
               size="sm"
               icon={<></>}
+              src={account.data?.profilePictureUrl ?? ''}
               name={account.data?.email ?? ''}
               {...(isAccountActive
                 ? {

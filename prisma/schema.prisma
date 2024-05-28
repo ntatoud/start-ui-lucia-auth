@@ -26,19 +26,22 @@ enum UserRole {
 }
 
 model User {
-  id             String        @id @default(cuid())
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  name           String?
-  email          String        @unique
-  accountStatus  AccountStatus @default(NOT_VERIFIED)
-  image          String?
-  authorizations UserRole[]    @default([APP])
-  language       String        @default("en")
-  lastLoginAt    DateTime?
+  id                String        @id @default(cuid())
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  name              String?
+  email             String        @unique
+  accountStatus     AccountStatus @default(NOT_VERIFIED)
+  profilePictureUrl String?
+
+  authorizations UserRole[] @default([APP])
+  language       String     @default("en")
+
+  lastLoginAt DateTime?
 
   // Relations
   Session Session[]
+  oauth   OAuthAccount[]
 }
 
 model Session {
@@ -46,6 +49,18 @@ model Session {
   userId    String
   expiresAt DateTime
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model OAuthAccount {
+  providerId     String
+  providerUserId String
+  accessToken    String
+  refreshToken   String?
+  expiresAt      DateTime?
+  userId         String
+  user           User      @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@id([providerId, providerUserId])
 }
 
 model VerificationToken {
