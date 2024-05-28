@@ -6,7 +6,7 @@
 
 4. [] Create your provider and ProviderUser schemas in server/config/oauth/providers/<provider_name>/ folder
 
-5. [] Add your provider to the types in server/config/oauth/schemas.ts 
+5. [] Add your provider to the types in server/config/oauth/types.ts 
 
 6. [] Add the provider's login button to the the SocialLogin component (don't forget the logo)
 

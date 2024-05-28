@@ -1,5 +1,5 @@
 import { TRPCError } from '@trpc/server';
-import { GoogleTokens, generateCodeVerifier, generateState } from 'arctic';
+import { generateCodeVerifier, generateState } from 'arctic';
 import ky from 'ky';
 
 import {
@@ -8,12 +8,14 @@ import {
   createOAuthProviderCookies,
 } from '@/server/config/oauth/common/utils';
 import {
+  FacebookTokens,
   FacebookUser,
   facebook,
   saveFacebookUser,
   zFacebookUser,
 } from '@/server/config/oauth/providers/facebook';
 import {
+  GoogleTokens,
   GoogleUser,
   google,
   saveGoogleUser,
@@ -174,7 +176,7 @@ export const saveUser = <TProvider extends OAuthProvider>({
       return saveFacebookUser({
         ctx,
         facebookUser: providerUser as FacebookUser,
-        tokens,
+        tokens: tokens as FacebookTokens,
       });
 
     case 'google':
