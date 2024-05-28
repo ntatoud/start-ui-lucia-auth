@@ -22,6 +22,13 @@ import {
   zGoogleUser,
 } from '@/server/config/oauth/providers/google';
 import {
+  SpotifyTokens,
+  SpotifyUser,
+  saveSpotifyUser,
+  spotify,
+  zSpotifyUser,
+} from '@/server/config/oauth/providers/spotify';
+import {
   OAuthProvider,
   ProviderCode,
   ProviderToken,
@@ -60,6 +67,16 @@ export const createAuthorizationURL = async <TProvider extends OAuthProvider>({
         url: googleUrl.toString(),
       };
 
+    case 'spotify':
+      createOAuthProviderCookies(state);
+
+      const spotifyUrl = await spotify.createAuthorizationURL(state, {
+        scopes: ['user-read-email', 'user-read-private'],
+      });
+      return {
+        url: spotifyUrl.toString(),
+      };
+
     default:
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -87,6 +104,7 @@ export const valideOAuthRequest = <TProvider extends OAuthProvider>({
       return baseValidateOAuthRequestWithVerifier(searchParams);
 
     case 'facebook':
+    case 'spotify':
       return baseValidateOAuthRequest(searchParams);
 
     default:
@@ -115,6 +133,10 @@ export const validateAuthenticationCode = <TProvider extends OAuthProvider>({
         googleVerifier.code,
         googleVerifier.codeVerifier
       );
+
+    case 'spotify':
+      const spotifyVerifier = verifier as ProviderCode<'spotify'>;
+      return spotify.validateAuthorizationCode(spotifyVerifier.code);
 
     default:
       throw new TRPCError({
@@ -152,6 +174,17 @@ export const fetchUserData = async <TProvider extends OAuthProvider>({
 
       return zGoogleUser().parse(googleUserResponse);
 
+    case 'spotify':
+      const spotifyUserResponse = await ky
+        .get('https://api.spotify.com/v1/me', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
+        .json();
+
+      return zSpotifyUser().parse(spotifyUserResponse);
+
     default:
       throw new TRPCError({
         code: 'BAD_REQUEST',
@@ -184,6 +217,13 @@ export const saveUser = <TProvider extends OAuthProvider>({
         ctx,
         googleUser: providerUser as GoogleUser,
         tokens: tokens as GoogleTokens,
+      });
+
+    case 'spotify':
+      return saveSpotifyUser({
+        ctx,
+        spotifyUser: providerUser as SpotifyUser,
+        tokens: tokens as SpotifyTokens,
       });
 
     default:

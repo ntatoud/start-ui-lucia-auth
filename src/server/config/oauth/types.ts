@@ -1,11 +1,12 @@
-import { FacebookTokens, GoogleTokens } from 'arctic';
+import { FacebookTokens, GoogleTokens, SpotifyTokens } from 'arctic';
 import { z } from 'zod';
 
 import { FacebookUser } from './providers/facebook';
 import { GoogleUser } from './providers/google';
+import { SpotifyUser } from './providers/spotify';
 
 export type OAuthProvider = z.infer<ReturnType<typeof zOAuthProvider>>;
-export const zOAuthProvider = () => z.enum(['google', 'facebook']);
+export const zOAuthProvider = () => z.enum(['google', 'facebook', 'spotify']);
 
 type OAuthCode = {
   code: string;
@@ -23,6 +24,11 @@ type OAuthProviderData = {
   facebook: {
     tokens: FacebookTokens;
     user: FacebookUser;
+    verificationCode: OAuthCode;
+  };
+  spotify: {
+    tokens: SpotifyTokens;
+    user: SpotifyUser;
     verificationCode: OAuthCode;
   };
 };
