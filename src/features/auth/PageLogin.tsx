@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { LinkApp } from '@/features/app/LinkApp';
 import { APP_PATH } from '@/features/app/constants';
 import { LoginForm } from '@/features/auth/LoginForm';
+import { SocialLogin } from '@/features/auth/SocialLogin';
 import type { RouterInputs, RouterOutputs } from '@/lib/trpc/types';
 
 export default function PageLogin() {
@@ -57,7 +58,7 @@ export default function PageLogin() {
         </Text>
         <Divider flex={1} />
       </HStack>
-
+      <SocialLogin />
       <LoginForm onSuccess={handleOnSuccess} buttonVariant="@secondary" />
     </Stack>
   );

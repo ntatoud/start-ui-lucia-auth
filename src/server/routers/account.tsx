@@ -38,6 +38,7 @@ export const accountRouter = createTRPCRouter({
           email: true,
           authorizations: true,
           language: true,
+          profilePictureUrl: true,
         },
       });
 
