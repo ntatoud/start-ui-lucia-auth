@@ -10,6 +10,6 @@ export const google = new Google(
 );
 
 export { zGoogleUser, type GoogleUser } from './schemas';
-export type { FacebookTokens } from 'arctic';
+export type { GoogleTokens } from 'arctic';
 
 export { saveGoogleUser } from './functions';
